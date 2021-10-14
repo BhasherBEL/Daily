@@ -24,13 +24,15 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        EventsController eventsController = new EventsController(Objects.requireNonNull(getContext()));
+        EventsController eventsController = new EventsController(requireContext());
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ArrayList<Object> eventList = eventsController.getSortedEvents();
 
         RecyclerView recyclerView = view.findViewById(R.id.events_recycler_view);
+
+        System.out.println("Amount of events: " + eventList.size());
 
         recyclerView.setAdapter(new EventAdapter(eventList));
 

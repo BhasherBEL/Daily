@@ -1,5 +1,6 @@
 package be.bhasher.daily;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.CalendarContract;
 import android.util.Pair;
+
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
