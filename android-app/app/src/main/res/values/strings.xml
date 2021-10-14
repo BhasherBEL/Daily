@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Daily</string>
+    <string name="header_text">Up next</string>
+    <string name="homepage_today">Today</string>
+    <string name="homepage_tomorrow">Tomorrow</string>
+    <string name="footer_home">Home</string>
+    <string name="footer_calendar">Calendar</string>
+    <string name="footer_move">Move</string>
+</resources>
