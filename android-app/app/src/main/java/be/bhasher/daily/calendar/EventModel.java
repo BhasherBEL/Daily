@@ -1,9 +1,11 @@
-package be.bhasher.daily;
+package be.bhasher.daily.calendar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import be.bhasher.daily.utils.DateTools;
 
 public class EventModel {
     private final long id;
@@ -40,16 +42,8 @@ public class EventModel {
         return endTime < System.currentTimeMillis();
     }
 
-    public String getParsedStartTime(){
-        return parseTime(this.startTime);
-    }
-
-    public String getParsedEndTime(){
-        return parseTime(this.endTime);
-    }
-
     public String getParsedTime(){
-        return getParsedStartTime() + " - " + getParsedEndTime();
+        return parseTime(startTime) + " - " + parseTime(endTime);
     }
 
     private static String parseTime(long time){

@@ -6,13 +6,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.util.Pair;
+import android.text.format.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Stack;
 
-import be.bhasher.daily.EventModel;
+import be.bhasher.daily.utils.DateTools;
 
 public class CalendarManager {
     public static final String[] EVENT_COLUMNS  = new String[]{
@@ -33,12 +32,11 @@ public class CalendarManager {
         contentResolver = context.getContentResolver();
     }
 
-    public ArrayList<EventModel> getEventsByTime(long dt_from, long dt_to){
+    private ArrayList<EventModel> getEventsByTime(long from, long to){
         Uri.Builder builder = eventsWhenUri.buildUpon();
-        long now = new Date().getTime();
 
-        ContentUris.appendId(builder, now - dt_from);
-        ContentUris.appendId(builder, now + dt_to);
+        ContentUris.appendId(builder, from);
+        ContentUris.appendId(builder, to);
 
         Cursor eventCursor = this.contentResolver.query(
                 builder.build(),
@@ -50,8 +48,8 @@ public class CalendarManager {
 
         ArrayList<EventModel> events = new ArrayList<>();
 
-        if(eventCursor.getCount() > 0 && eventCursor.moveToFirst()){
-            do{
+        if(eventCursor.getCount() > 0 && eventCursor.moveToFirst()) {
+            do {
                 long id = eventCursor.getLong(0);
                 String title = eventCursor.getString(1);
                 long start = eventCursor.getLong(2);
@@ -59,35 +57,33 @@ public class CalendarManager {
                 int color = eventCursor.getInt(4);
 
                 events.add(new EventModel(id, title, start, end, color));
-            }while(eventCursor.moveToNext());
+            } while (eventCursor.moveToNext());
         }
 
         return events;
     }
 
-    public ArrayList<EventModel> getEventsByTime(long to){
-        return getEventsByTime(0, to);
+    public ArrayList<Object> getEventsInRange(long dt_from, long dt_to){
+        long now = new Date().getTime();
+
+        long from = DateTools.atStartOfDay(new Date(now - dt_from)).getTime();
+        long to = DateTools.atEndOfDay(new Date(now + dt_to)).getTime();
+
+        ArrayList<Object> eventsByDay = new ArrayList<>();
+
+        while(from < to){
+            ArrayList<EventModel> events = getEventsByTime(from, DateTools.atEndOfDay(new Date(from)).getTime());
+            if(!events.isEmpty()){
+                eventsByDay.add(DateTools.parseLong(from, "EEEE d MMMM", "d MMMM yyyy"));
+                eventsByDay.addAll(events);
+            }
+            from += DateUtils.DAY_IN_MILLIS;
+        }
+
+        return eventsByDay;
     }
 
-    public ArrayList<Object> addSeparators(ArrayList<EventModel> events){
-        ArrayList<Object> items = new ArrayList<>();
-        Stack<Pair<Integer, String>> stack = new Stack<>();
-
-        String previousDate = "";
-        for(int i=0;i<events.size();i++){
-            items.add(events.get(i));
-            if(events.get(i).getDate("EEEE d MMMM", "d MMMM yyyy").equals(previousDate)) continue;
-            else{
-                previousDate = events.get(i).getDate("EEEE d MMMM", "d MMMM yyyy");
-                stack.add(new Pair<>(i, previousDate));
-            }
-        }
-
-        while(!stack.empty()){
-            Pair<Integer, String> pair = stack.pop();
-            items.add(pair.first, pair.second);
-        }
-
-        return items;
+    public ArrayList<Object> getEventsInRange(long to){
+        return getEventsInRange(0, to);
     }
 }

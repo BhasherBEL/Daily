@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import be.bhasher.daily.EventModel;
+import be.bhasher.daily.calendar.EventModel;
 import be.bhasher.daily.R;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
