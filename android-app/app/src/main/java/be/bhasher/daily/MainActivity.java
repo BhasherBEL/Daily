@@ -3,6 +3,7 @@ package be.bhasher.daily;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import be.bhasher.daily.calendar.CalendarManager;
 import be.bhasher.daily.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {

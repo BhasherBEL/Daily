@@ -6,12 +6,14 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EventModel {
+    private final long id;
     private final String name;
     private final long startTime;
     private final long endTime;
     private final int color;
 
-    public EventModel(String name, long startTime, long endTime, int color){
+    public EventModel(long id, String name, long startTime, long endTime, int color){
+        this.id = id;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;

@@ -70,9 +70,9 @@ public class EventsController {
                 String rrule = this.cursor.getString(5);
 
                 ReoccurrenceRule rule = new ReoccurrenceRule(start, end, rrule, (new Date()).getTime());
-                EventModel eventModel = new EventModel(title, start, end, color);
+                //EventModel eventModel = new EventModel(title, start, end, color);
 
-                if(!eventModel.isFinish()) events.add(eventModel);
+                //if(!eventModel.isFinish()) events.add(eventModel);
 
                 i++;
             }while(this.cursor.moveToNext());
@@ -92,7 +92,7 @@ public class EventsController {
             }
         });
 
-        HashMap<String, String> arguments = new HashMap<>();
+       /* HashMap<String, String> arguments = new HashMap<>();
 
         arguments.put("date", events.get(0).getDate("ddMMyy", "ddMMyy"));
         arguments.put("time", events.get(0).getStartTime("HHmm"));
@@ -103,7 +103,7 @@ public class EventsController {
         arguments.put("fast", "true");
 
         IRail iRail = new IRail();
-        iRail.request(APIS.CONNECTION, arguments);
+        iRail.request(APIS.CONNECTION, arguments);*/
 
         ArrayList<Object> items = new ArrayList<>();
         Stack<Pair<Integer, String>> stack = new Stack<>();
