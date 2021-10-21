@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import be.bhasher.daily.api.AdeScheduler;
 import be.bhasher.daily.utils.DateTools;
 
 public class EventModel {
@@ -16,14 +17,16 @@ public class EventModel {
     public final long endTime;
     public final int color;
     public final boolean allDay;
+    public final String location;
 
-    public EventModel(long id, String name, long startTime, long endTime, int color, boolean allDay){
+    public EventModel(long id, String name, long startTime, long endTime, int color, boolean allDay, String location){
         this.id = id;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.color = color;
         this.allDay = allDay;
+        this.location = location;
 
         this.begin.setTimeInMillis(startTime);
         this.end.setTimeInMillis(endTime);
@@ -54,5 +57,11 @@ public class EventModel {
 
     private static String parseDate(Calendar cal){
         return new SimpleDateFormat("dd/MM HH:mm", Locale.FRANCE).format(cal.getTime());
+    }
+
+    public String searchAddress(){
+        String adeAddress = AdeScheduler.adeScheduler.search(this.location);
+        if(adeAddress != null) return adeAddress;
+        return this.location;
     }
 }

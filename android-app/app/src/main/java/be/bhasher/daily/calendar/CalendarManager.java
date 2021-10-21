@@ -26,6 +26,7 @@ public class CalendarManager {
             CalendarContract.Instances.END,
             CalendarContract.Instances.CALENDAR_COLOR,
             CalendarContract.Instances.ALL_DAY,
+            CalendarContract.Instances.EVENT_LOCATION,
     };
 
     private static final Uri calendarUri = CalendarContract.CONTENT_URI;
@@ -62,8 +63,9 @@ public class CalendarManager {
                 long end = eventCursor.getLong(3);
                 int color = eventCursor.getInt(4);
                 boolean allDay = eventCursor.getInt(5) == 1;
+                String location = eventCursor.getString(6);
 
-                events.add(new EventModel(id, title, start, end, color, allDay));
+                events.add(new EventModel(id, title, start, end, color, allDay, location));
             } while (eventCursor.moveToNext());
         }
 

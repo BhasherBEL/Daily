@@ -48,9 +48,9 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.events_recycler_view);
 
-        ImageView reloadView = (ImageView) this.activity.findViewById(R.id.reload);
+        ImageView reloadView = this.activity.findViewById(R.id.reload);
 
-        EventAdapter eventAdapter = new EventAdapter(events);
+        EventAdapter eventAdapter = new EventAdapter(events, activity);
 
         recyclerView.setAdapter(eventAdapter);
 

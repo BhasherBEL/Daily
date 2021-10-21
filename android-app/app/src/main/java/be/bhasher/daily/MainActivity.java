@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import be.bhasher.daily.api.AdeScheduler;
 import be.bhasher.daily.calendar.CalendarManager;
 import be.bhasher.daily.fragments.HomeFragment;
 

@@ -3,8 +3,10 @@ package be.bhasher.daily.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,15 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import be.bhasher.daily.MainActivity;
 import be.bhasher.daily.calendar.EventModel;
 import be.bhasher.daily.R;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public final ArrayList<Object> eventList;
+    private final MainActivity activity;
 
-    public EventAdapter(ArrayList<Object> eventList){
+    public EventAdapter(ArrayList<Object> eventList, MainActivity activity){
         this.eventList = eventList;
+        this.activity = activity;
     }
 
     @NonNull
@@ -43,6 +48,12 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 viewHolderEvent.eventTitle.setText(event.name);
                 viewHolderEvent.eventTime.setText(event.getParsedTime());
                 viewHolderEvent.eventColor.setColorFilter(event.color);
+                viewHolderEvent.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(activity, "" + ((EventModel) eventList.get(position)).searchAddress(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
             case 1:
                 ViewHolderDate viewHolderDate = (ViewHolderDate) holder;
@@ -64,7 +75,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return -1;
     }
 
-    static class ViewHolderEvent extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position);
+    }
+
+    static class ViewHolderEvent extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final ImageView eventColor;
         private final TextView eventTitle;
         private final TextView eventTime;
@@ -74,6 +89,18 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             this.eventColor = view.findViewById(R.id.event_color);
             this.eventTitle = view.findViewById(R.id.event_title);
             this.eventTime = view.findViewById(R.id.event_time);
+            view.setOnClickListener(this);
+        }
+
+        private OnItemClickListener onItemClickListener;
+
+        public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+            this.onItemClickListener = onItemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(onItemClickListener != null) onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
 
