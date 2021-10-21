@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ArrayList<Object> events = eventsController.getEventsInRange(DateUtils.DAY_IN_MILLIS * 14);
+        ArrayList<Object> events = eventsController.getEventsInRangeWithSep(DateUtils.DAY_IN_MILLIS * 14);
 
         RecyclerView recyclerView = view.findViewById(R.id.events_recycler_view);
 

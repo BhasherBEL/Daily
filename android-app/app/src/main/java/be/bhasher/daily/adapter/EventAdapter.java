@@ -40,9 +40,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case 0:
                 ViewHolderEvent viewHolderEvent = (ViewHolderEvent) holder;
                 EventModel event = (EventModel) eventList.get(position);
-                viewHolderEvent.eventTitle.setText(event.getName());
+                viewHolderEvent.eventTitle.setText(event.name);
                 viewHolderEvent.eventTime.setText(event.getParsedTime());
-                viewHolderEvent.eventColor.setColorFilter(event.getColor());
+                viewHolderEvent.eventColor.setColorFilter(event.color);
                 break;
             case 1:
                 ViewHolderDate viewHolderDate = (ViewHolderDate) holder;

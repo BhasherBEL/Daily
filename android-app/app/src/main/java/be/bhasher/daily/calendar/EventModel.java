@@ -8,74 +8,51 @@ import java.util.Locale;
 import be.bhasher.daily.utils.DateTools;
 
 public class EventModel {
-    private final long id;
-    private final String name;
-    private final long startTime;
-    private final long endTime;
-    private final int color;
+    public final long id;
+    public final String name;
+    public final long startTime;
+    public final Calendar begin = Calendar.getInstance();
+    public final Calendar end  = Calendar.getInstance();
+    public final long endTime;
+    public final int color;
+    public final boolean allDay;
 
-    public EventModel(long id, String name, long startTime, long endTime, int color){
+    public EventModel(long id, String name, long startTime, long endTime, int color, boolean allDay){
         this.id = id;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.color = color;
+        this.allDay = allDay;
+
+        this.begin.setTimeInMillis(startTime);
+        this.end.setTimeInMillis(endTime);
+
+        if(allDay){
+            this.begin.set(Calendar.HOUR_OF_DAY, 0);
+            this.begin.set(Calendar.MINUTE, 0);
+            this.end.set(Calendar.HOUR_OF_DAY, 0);
+            this.end.set(Calendar.MINUTE, 0);
+            this.end.add(Calendar.MILLISECOND, -1);
+        }
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public boolean isFinish() {
-        return endTime < System.currentTimeMillis();
+    public boolean isOneDay(){
+        return begin.get(Calendar.YEAR) == end.get(Calendar.YEAR)
+                && begin.get(Calendar.MONTH) == end.get(Calendar.MONTH)
+                && begin.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH);
     }
 
     public String getParsedTime(){
-        return parseTime(startTime) + " - " + parseTime(endTime);
+        if(isOneDay()) return parseTime(begin) + " - " + parseTime(end);
+        else return parseTime(begin) + " - " + parseDate(end);
     }
 
-    private static String parseTime(long time){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.FRANCE);
-
-        return dateFormat.format(calendar.getTime());
+    private static String parseTime(Calendar cal){
+        return new SimpleDateFormat("HH:mm", Locale.FRANCE).format(cal.getTime());
     }
 
-    public String getDate(String nearFormat, String farFormat){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(this.startTime);
-
-        DateFormat dateFormat;
-        if(calendar.getTime().getYear() == Calendar.getInstance().getTime().getYear()){
-             dateFormat = new SimpleDateFormat(nearFormat, Locale.FRANCE);
-        }else{
-            dateFormat = new SimpleDateFormat(farFormat, Locale.FRANCE);
-        }
-
-        return dateFormat.format(calendar.getTime());
-    }
-
-    public String getStartTime(String format){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(this.startTime);
-
-        DateFormat dateFormat = new SimpleDateFormat(format, Locale.FRANCE);
-
-        return dateFormat.format(calendar.getTime());
-
+    private static String parseDate(Calendar cal){
+        return new SimpleDateFormat("dd/MM HH:mm", Locale.FRANCE).format(cal.getTime());
     }
 }

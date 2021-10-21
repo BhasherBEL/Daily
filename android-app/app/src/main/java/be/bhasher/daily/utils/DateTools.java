@@ -30,10 +30,7 @@ public class DateTools {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static String parseLong(long time, String nearFormat, String farFormat){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-
+    public static String parseCal(Calendar calendar, String nearFormat, String farFormat){
         DateFormat dateFormat;
         if(calendar.getTime().getYear() == Calendar.getInstance().getTime().getYear()){
             dateFormat = new SimpleDateFormat(nearFormat, Locale.FRANCE);
