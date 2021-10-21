@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.event_container, new HomeFragment());
+            transaction.replace(R.id.event_container, new HomeFragment(this));
             transaction.addToBackStack(null);
             transaction.commit();
 

@@ -67,6 +67,8 @@ public class CalendarManager {
             } while (eventCursor.moveToNext());
         }
 
+        eventCursor.close();
+
         return events;
     }
 
@@ -74,7 +76,7 @@ public class CalendarManager {
 
         long now = new Date().getTime();
 
-        long from = DateTools.atStartOfDay(new Date(now - dt_from)).getTime();
+        long from = DateTools.atStartOfDay(new Date(now + dt_from)).getTime();
         long to = DateTools.atEndOfDay(new Date(now + dt_to)).getTime();
 
         return getEventsByTime(from, to);
